@@ -15,11 +15,11 @@ datasource db {
 // MODULO DE ESPECIALIDADES MÉDICAS
 
 model Especialidad {
-  id          Int      @id @default(autoincrement()) // Identificador único de la especialidad [PK]
-  nombre      String   @unique                       // Nombre único de la especialidad (Ej: Pediatría)
-  descripcion String?                                // Descripción opcional de la especialidad
+  id          Int      @id @default(autoincrement()) // Identificador unico de la especialidad [PK]
+  nombre      String   @unique                       // Nombre único de la especialidad (Ej: Pediatria)
+  descripcion String?                                // Descripcion opcional de la especialidad
 
-  // Relación: Una especialidad puede tener muchos médicos asignados
+  // Relacion: Una especialidad puede tener muchos médicos asignados
   medicos     Medico[]
 
   @@map("especialidades")
@@ -28,19 +28,19 @@ model Especialidad {
 // MODULO DE MEDICOS
 
 model Medico {
-  id                 Int      @id @default(autoincrement()) // Identificador único del médico [PK]
+  id                 Int      @id @default(autoincrement()) // Identificador unico del medico [PK]
   documentoIdentidad String   @unique                       // Cédula o documento de identidad único
-  nombre             String                                 // Nombre del médico
-  apellido           String                                 // Apellido del médico
-  correo             String   @unique                       // Correo electrónico institucional único
+  nombre             String                                 // Nombre del medico
+  apellido           String                                 // Apellido del medico
+  correo             String   @unique                       // Correo electrónico institucional unico
   telefono           String                                 // Teléfono de contacto
-  estado             Boolean  @default(true)                // Estado del médico (Activo: true, Inactivo: false)
+  estado             Boolean  @default(true)                // Estado del medico (Activo: true, Inactivo: false)
   
-  // Llave foránea hacia la especialidad
+  // Llave foranea hacia la especialidad
   especialidadId     Int                                    // ID de la especialidad [FK]
   especialidad       Especialidad @relation(fields: [especialidadId], references: [id])
 
-  // Relaciones del médico con citas e historias clínicas
+  // Relaciones del medico con citas e historias clínicas
   citas              Cita[]
   historiasClinicas  HistoriaClinica[]
 
@@ -48,7 +48,7 @@ model Medico {
 }
 
 
-// MÓDULO DE PACIENTES
+// MODULO DE PACIENTES
 
 model Paciente {
   id                 Int      @id @default(autoincrement()) // Identificacion paciente [PK]
@@ -68,10 +68,10 @@ model Paciente {
 }
 
 
-// MÓDULO DE CITAS MÉDICAS
+// MODULO DE CITAS MÉDICAS
 
 model Cita {
-  id         Int      @id @default(autoincrement()) // Identificador único de la cita [PK]
+  id         Int      @id @default(autoincrement()) // Identificador unico de la cita [PK]
   fechaHora  DateTime                               // Fecha y hora programada para la cita
   estado     String   @default("PROGRAMADA")        // Estado actual (PROGRAMADA, ATENDIDA, CANCELADA)
   motivo     String                                 // Motivo de consulta manifestado por el paciente
@@ -91,38 +91,38 @@ model Cita {
 }
 
 
-// MÓDULO DE HISTORIAS CLÍNICAS
+// MODULO DE HISTORIAS CLÍNICAS
 
 model HistoriaClinica {
-  id            Int      @id @default(autoincrement()) // Identificador único de la historia [PK]
+  id            Int      @id @default(autoincrement()) // Identificador unico de la historia [PK]
   fechaCreacion DateTime @default(now())               // Fecha de registro de la atención
-  diagnostico   String                                 // Diagnóstico médico emitido
+  diagnostico   String                                 // Diagnóstico medico emitido
   tratamiento   String                                 // Tratamiento o medicamentos recetados
   observaciones String?                                // Notas u observaciones adicionales (opcional)
 
-  // Llaves foráneas y relación uno a uno estricta con la Cita
+  // Llaves foraneas y relación uno a uno estricta con la Cita
   citaId        Int      @unique                       // ID de la cita asociada [FK] (Único 1:1)
   cita          Cita     @relation(fields: [citaId], references: [id])
 
   pacienteId    Int                                    // ID del paciente [FK]
   paciente      Paciente @relation(fields: [pacienteId], references: [id])
 
-  medicoId      Int                                    // ID del médico que atiende [FK]
+  medicoId      Int                                    // ID del medico que atiende [FK]
   medico        Medico   @relation(fields: [medicoId], references: [id])
 
   @@map("historias_clinicas")
 }
 
 
-// MÓDULO DE FACTURACIÓN
+// MODULO DE FACTURACIÓN
 
 model Factura {
-  id           Int      @id @default(autoincrement()) // Identificador único de la factura [PK]
+  id           Int      @id @default(autoincrement()) // Identificador unico de la factura [PK]
   fechaEmision DateTime @default(now())               // Fecha en que se emite la factura
   valorTotal   Decimal  @db.Decimal(10, 2)             // Valor monetario total a pagar (pesos colombianos)
   estado       String   @default("PENDIENTE")         // Estado de pago (PENDIENTE, PAGADA, ANULADA)
 
-  // Llave foránea y relación uno a uno con la Cita
+  // Llave foránea y relacion uno a uno con la Cita
   citaId       Int      @unique                       // ID de la cita facturada [FK] (Único 1:1)
   cita         Cita     @relation(fields: [citaId], references: [id])
 

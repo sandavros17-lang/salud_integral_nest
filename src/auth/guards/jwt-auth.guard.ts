@@ -4,7 +4,10 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common'
-import * as jwt from 'jsonwebtoken'
+import { createRequire } from 'node:module'
+
+const require = createRequire(import.meta.url)
+const jwt = require('jsonwebtoken') as typeof import('jsonwebtoken')
 
 @Injectable()
 export class JwtAuthGuard implements CanActivate {

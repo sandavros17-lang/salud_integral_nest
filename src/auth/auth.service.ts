@@ -1,7 +1,10 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common'
-import * as bcrypt from 'bcryptjs'
-import * as jwt from 'jsonwebtoken'
+import { createRequire } from 'node:module'
 import { PrismaService } from '../prisma/prisma.service.js'
+
+const require = createRequire(import.meta.url)
+const bcrypt = require('bcryptjs') as typeof import('bcryptjs')
+const jwt = require('jsonwebtoken') as typeof import('jsonwebtoken')
 
 @Injectable()
 export class AuthService {
